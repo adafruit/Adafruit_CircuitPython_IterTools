@@ -39,7 +39,7 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 """
 #pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
-#pyliny:disable=stop-iteration-return
+#pylint:disable=stop-iteration-return
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
@@ -400,7 +400,7 @@ def permutations(iterable, r=None):
             return
 
 
-def product(*args, repeat=1):
+def product(*args, r=1):
     """Cartesian product of input iterables.
 
     Roughly equivalent to nested for-loops in a generator expression. For
@@ -417,13 +417,13 @@ def product(*args, repeat=1):
     product(A, repeat=4) means the same as product(A, A, A, A).
 
     :param args: sources of values
-    :param repeat: number of times to duplicate the (single) arg for taking a
-                   product with itself (default is 1)
+    :param : number of times to duplicate the (single) arg for taking a
+             product with itself (default is 1)
 
     """
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
-    pools = [tuple(pool) for pool in args] * repeat
+    pools = [tuple(pool) for pool in args] * r
     result = [[]]
     for pool in pools:
         result = [x+[y] for x in result for y in pool]
@@ -445,7 +445,7 @@ def repeat(el, n=None):
         while True:
             yield el
     else:
-        for i in range(n):
+        for _ in range(n):
             yield el
 
 
