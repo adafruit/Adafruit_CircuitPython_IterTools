@@ -38,8 +38,8 @@ Implementation Notes
 * Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 """
-#pylint:disable=invalid-name
-# imports
+#pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
+#pyliny:disable=stop-iteration-return
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
@@ -117,13 +117,15 @@ def combinations(iterable, r):
     indices = list(range(r))
     yield tuple(pool[i] for i in indices)
     while True:
+        index = 0
         for i in reversed(range(r)):
             if indices[i] != i + n - r:
+                index = i
                 break
         else:
             return
-        indices[i] += 1
-        for j in range(i+1, r):
+        indices[index] += 1
+        for j in range(index+1, r):
             indices[j] = indices[j-1] + 1
         yield tuple(pool[i] for i in indices)
 
@@ -151,12 +153,14 @@ def combinations_with_replacement(iterable, r):
     indices = [0] * r
     yield tuple(pool[i] for i in indices)
     while True:
+        index = 0
         for i in reversed(range(r)):
             if indices[i] != n - 1:
+                index = i
                 break
         else:
             return
-        indices[i:] = [indices[i] + 1] * (r - i)
+        indices[index:] = [indices[index] + 1] * (r - index)
         yield tuple(pool[i] for i in indices)
 
 
@@ -341,12 +345,12 @@ def islice(p, start, stop=(), step=1):
     if stop is not None and start >= stop:
         return
     it = iter(p)
-    for i in range(start):
+    for _ in range(start):
         next(it)
 
     while True:
         yield next(it)
-        for i in range(step - 1):
+        for _ in range(step - 1):
             next(it)
         start += step
         if stop is not None and start >= stop:

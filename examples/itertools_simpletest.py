@@ -40,18 +40,8 @@ def now():
     return time.monotonic()
 
 
-# def non_iter():
-#     reading_number = 1
+datapoints = zip(count(1), repeatfunc(now), map(int, repeatfunc(read_temperature)))
 
-#     while True:
-#         datapoint = (count, now(), int(read_temperature()))
-#         print(datapoint)
-#         count += 1
-#         time.sleep(20.0)
-
-def iter():
-    datapoints = zip(count(1), repeatfunc(now), map(int, repeatfunc(read_temperature)))
-
-    while True:
-        print(next(datapoints))
-        time.sleep(20.0)
+while True:
+    print(next(datapoints))
+    time.sleep(20.0)
