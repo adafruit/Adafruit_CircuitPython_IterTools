@@ -410,8 +410,8 @@ def product(*args, r=1):
     product(A, repeat=4) means the same as product(A, A, A, A).
 
     :param args: sources of values
-    :param : number of times to duplicate the (single) arg for taking a
-             product with itself (default is 1)
+    :param r: number of times to duplicate the (single) arg for taking a
+              product with itself (default is 1)
 
     """
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
