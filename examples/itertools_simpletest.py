@@ -24,8 +24,8 @@ import time
 import board
 import busio
 import adafruit_si7021
-from adafruit_itertools import count
-from adafruit_itertools_extras import repeatfunc
+from adafruit_itertools.adafruit_itertools import count
+from adafruit_itertools.adafruit_itertools_extras import repeatfunc
 
 
 i2c = busio.I2C(board.SCL, board.SDA)
