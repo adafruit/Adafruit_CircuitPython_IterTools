@@ -39,7 +39,7 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 """
 #pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
-#pylint:disable=stop-iteration-return
+#pylint:disable=stop-iteration-return,anomalous-backslash-in-string
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
