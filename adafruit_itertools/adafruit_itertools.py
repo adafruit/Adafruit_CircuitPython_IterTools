@@ -269,14 +269,7 @@ class groupby:
     iterable with groupby(). Because the source is shared, when the
     groupby() object is advanced, the previous group is no longer
     visible. So, if that data is needed later, it should be stored as a
-    list:
-
-    groups = []
-    uniquekeys = []
-    data = sorted(data, key=keyfunc)
-    for k, g in groupby(data, keyfunc):
-        groups.append(list(g))      # Store group iterator as a list
-        uniquekeys.append(k)
+    list.
 
     :param iterable: the source of values
     :param key: the key computation function (default is None)
