@@ -44,5 +44,5 @@ install:
 script:
   - pylint adafruit_itertools/adafruit_itertools.py adafruit_itertools/adafruit_itertools_extras.py
   - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name,bad-whitespace examples/*.py)
-  - circuitpython-build-bundles --filename_prefix adafruit-circuitpython-itertools --library_location .
+  - circuitpython-build-bundles --filename_prefix adafruit-circuitpython-itertools --library_location ./adafruit_itertools
   - cd docs && sphinx-build -E -W -b html . _build/html && cd ..
