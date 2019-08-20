@@ -74,7 +74,7 @@ Based on code from the offical Python documentation.
   https://github.com/adafruit/circuitpython/releases
 """
 
-#pylint:disable=invalid-name,deprecated-lambda,keyword-arg-before-vararg
+#pylint:disable=invalid-name,deprecated-lambda,keyword-arg-before-vararg,relative-beyond-top-level
 
 from . import adafruit_itertools as it
 
