@@ -76,7 +76,7 @@ Based on code from the offical Python documentation.
 
 #pylint:disable=invalid-name,deprecated-lambda,keyword-arg-before-vararg
 
-import adafruit_itertools as it
+from . import adafruit_itertools as it
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
