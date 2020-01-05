@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_IterTools.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_IterTools
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_IterTools/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_IterTools/actions
     :alt: Build Status
 
 Python's itertools for CircuitPython
