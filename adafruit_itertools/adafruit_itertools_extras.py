@@ -74,7 +74,7 @@ Based on code from the offical Python documentation.
   https://github.com/adafruit/circuitpython/releases
 """
 
-#pylint:disable=invalid-name,deprecated-lambda,keyword-arg-before-vararg,relative-beyond-top-level
+# pylint:disable=invalid-name,keyword-arg-before-vararg,relative-beyond-top-level
 
 from . import adafruit_itertools as it
 
@@ -89,9 +89,9 @@ def all_equal(iterable):
 
     """
     g = it.groupby(iterable)
-    next(g)                               # should succeed, value isn't relevant
+    next(g)  # should succeed, value isn't relevant
     try:
-        next(g)                           # should fail: only 1 group
+        next(g)  # should fail: only 1 group
         return False
     except StopIteration:
         return True
@@ -198,9 +198,10 @@ def nth(iterable, n, default=None):
 
     """
     try:
-        return next(it.islice(iterable, n, n+1))
+        return next(it.islice(iterable, n, n + 1))
     except StopIteration:
         return default
+
 
 def padnone(iterable):
     """Returns the sequence elements and then returns None indefinitely.

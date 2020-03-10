@@ -59,8 +59,8 @@ Implementation Notes
 * Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 """
-#pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
-#pylint:disable=stop-iteration-return,anomalous-backslash-in-string
+# pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
+# pylint:disable=stop-iteration-return,anomalous-backslash-in-string
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
@@ -146,8 +146,8 @@ def combinations(iterable, r):
         else:
             return
         indices[index] += 1
-        for j in range(index+1, r):
-            indices[j] = indices[j-1] + 1
+        for j in range(index + 1, r):
+            indices[j] = indices[j - 1] + 1
         yield tuple(pool[i] for i in indices)
 
 
@@ -296,6 +296,7 @@ class groupby:
     :param key: the key computation function (default is None)
 
     """
+
     # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
     # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
 
@@ -312,7 +313,7 @@ class groupby:
     def __next__(self):
         self.id = object()
         while self.currkey == self.tgtkey:
-            self.currvalue = next(self.it)    # Exit on StopIteration
+            self.currvalue = next(self.it)  # Exit on StopIteration
             self.currkey = self.keyfunc(self.currvalue)
         self.tgtkey = self.currkey
         return (self.currkey, self._grouper(self.tgtkey, self.id))
@@ -397,13 +398,13 @@ def permutations(iterable, r=None):
     if r > n:
         return
     indices = list(range(n))
-    cycles = list(range(n, n-r, -1))
+    cycles = list(range(n, n - r, -1))
     yield tuple(pool[i] for i in indices[:r])
     while n:
         for i in reversed(range(r)):
             cycles[i] -= 1
             if cycles[i] == 0:
-                indices[i:] = indices[i+1:] + indices[i:i+1]
+                indices[i:] = indices[i + 1 :] + indices[i : i + 1]
                 cycles[i] = n - i
             else:
                 j = cycles[i]
@@ -440,7 +441,7 @@ def product(*args, r=1):
     pools = [tuple(pool) for pool in args] * r
     result = [[]]
     for pool in pools:
-        result = [x+[y] for x in result for y in pool]
+        result = [x + [y] for x in result for y in pool]
     for prod in result:
         yield tuple(prod)
 
