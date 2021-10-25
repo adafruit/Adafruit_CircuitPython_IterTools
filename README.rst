@@ -54,6 +54,11 @@ Usage Example
         print(next(datapoints))
         time.sleep(20.0)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/itertools/en/latest/>`_.
+
 Contributing
 ============
 
