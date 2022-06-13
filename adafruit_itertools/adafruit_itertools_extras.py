@@ -39,7 +39,7 @@ Based on code from the offical Python documentation.
 
 # pylint:disable=invalid-name,keyword-arg-before-vararg,relative-beyond-top-level
 
-from . import adafruit_itertools as it
+import adafruit_itertools as it
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
