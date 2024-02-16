@@ -28,6 +28,30 @@ Implementation Notes
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
 
+try:
+    from typing import (
+        Any,
+        Callable,
+        Iterable,
+        Iterator,
+        List,
+        Optional,
+        Sequence,
+        Tuple,
+        TypeVar,
+        Union,
+    )
+    from typing_extensions import TypeAlias
+
+    _T = TypeVar("_T")
+    _Fill = TypeVar("_Fill")
+    _OptionalFill: TypeAlias = Optional[_Fill]
+    _N: TypeAlias = Union[int, float, complex]
+    _Predicate: TypeAlias = Callable[[_T], object]
+
+except ImportError:
+    pass
+
 
 def accumulate(iterable, func=lambda x, y: x + y):
     """Make an iterator that returns accumulated sums, or accumulated
@@ -52,7 +76,7 @@ def accumulate(iterable, func=lambda x, y: x + y):
         yield acc
 
 
-def chain(*iterables):
+def chain(*iterables: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator that returns elements from the first iterable until it
     is exhausted, then proceeds to the next iterable, until all of the iterables
     are exhausted. Used for treating consecutive sequences as a single sequence.
@@ -65,7 +89,7 @@ def chain(*iterables):
         yield from i
 
 
-def chain_from_iterable(iterables):
+def chain_from_iterable(iterables: Iterable[Iterable[_T]]) -> Iterator[_T]:
     """Alternate constructor for chain(). Gets chained inputs from a
     single iterable argument that is evaluated lazily.
 
@@ -78,7 +102,7 @@ def chain_from_iterable(iterables):
             yield element
 
 
-def combinations(iterable, r):
+def combinations(iterable: Iterable[_T], r: int) -> Iterator[Tuple[_T, ...]]:
     """Return r length subsequences of elements from the input iterable.
     Combinations are emitted in lexicographic sort order. So, if the input
     iterable is sorted, the combination tuples will be produced in sorted order.
@@ -113,7 +137,9 @@ def combinations(iterable, r):
         yield tuple(pool[i] for i in indices)
 
 
-def combinations_with_replacement(iterable, r):
+def combinations_with_replacement(
+    iterable: Iterable[_T], r: int
+) -> Iterator[Tuple[_T, ...]]:
     """Return r length subsequences of elements from the input iterable allowing
     individual elements to be repeated more than once.
 
@@ -147,7 +173,7 @@ def combinations_with_replacement(iterable, r):
         yield tuple(pool[i] for i in indices)
 
 
-def compress(data, selectors):
+def compress(data: Iterable[_T], selectors: Iterable[Any]) -> Iterable[_T]:
     """Make an iterator that filters elements from data returning only those
     that have a corresponding element in selectors that evaluates to True.
     Stops when either the data or selectors iterables has been exhausted.
@@ -160,7 +186,7 @@ def compress(data, selectors):
     return (d for d, s in zip(data, selectors) if s)
 
 
-def count(start=0, step=1):
+def count(start: _N = 0, step: _N = 1) -> Iterator[_N]:
     """Make an iterator that returns evenly spaced values starting with number
     start. Often used as an argument to map() to generate consecutive data
     points. Also, used with zip() to add sequence numbers.
@@ -196,7 +222,7 @@ def cycle(p):
         yield from p
 
 
-def dropwhile(predicate, iterable):
+def dropwhile(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator that drops elements from the iterable as long as the
     predicate is true; afterwards, returns every element. Note, the iterator
     does not produce any output until the predicate first becomes false, so it
@@ -216,7 +242,7 @@ def dropwhile(predicate, iterable):
         yield x
 
 
-def filterfalse(predicate, iterable):
+def filterfalse(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator that filters elements from iterable returning only those
     for which the predicate is False. If predicate is None, return the items
     that are false.
@@ -332,7 +358,9 @@ def islice(p, start, stop=(), step=1):
             return
 
 
-def permutations(iterable, r=None):
+def permutations(
+    iterable: Iterable[_T], r: Optional[int] = None
+) -> Iterator[Tuple[_T, ...]]:
     """Return successive r length permutations of elements in the iterable.
 
     If r is not specified or is None, then r defaults to the length of the
@@ -375,7 +403,7 @@ def permutations(iterable, r=None):
             return
 
 
-def product(*args, r=1):
+def product(*args: Iterable[_T], r: int = 1) -> Iterator[Tuple[_T, ...]]:
     """Cartesian product of input iterables.
 
     Roughly equivalent to nested for-loops in a generator expression. For
@@ -399,14 +427,14 @@ def product(*args, r=1):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
     pools = [tuple(pool) for pool in args] * r
-    result = [[]]
+    result: List[List[_T]] = [[]]
     for pool in pools:
         result = [x + [y] for x in result for y in pool]
     for prod in result:
         yield tuple(prod)
 
 
-def repeat(el, n=None):
+def repeat(el: _T, n: Optional[int] = None) -> Iterator[_T]:
     """Make an iterator that returns object over and over again. Runs
     indefinitely unless the times argument is specified. Used as argument to
     map() for invariant parameters to the called function. Also used with zip()
@@ -424,7 +452,9 @@ def repeat(el, n=None):
             yield el
 
 
-def starmap(function, iterable):
+def starmap(
+    function: Callable[..., _T], iterable: Iterable[Iterable[Any]]
+) -> Iterator[_T]:
     """Make an iterator that computes the function using arguments obtained from
     the iterable. Used instead of map() when argument parameters are already
     grouped in tuples from a single iterable (the data has been “pre-zipped”).
@@ -439,7 +469,7 @@ def starmap(function, iterable):
         yield function(*args)
 
 
-def takewhile(predicate, iterable):
+def takewhile(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator that returns elements from the iterable as long
     as the predicate is true.
 
@@ -455,7 +485,7 @@ def takewhile(predicate, iterable):
             break
 
 
-def tee(iterable, n=2):
+def tee(iterable: Iterable[_T], n: int = 2) -> Sequence[Iterator[_T]]:
     """Return n independent iterators from a single iterable.
 
     :param iterable: the iterator from which to make iterators.
@@ -465,7 +495,9 @@ def tee(iterable, n=2):
     return [iter(iterable) for _ in range(n)]
 
 
-def zip_longest(*args, fillvalue=None):
+def zip_longest(
+    *args: Iterable[_T], fillvalue: _OptionalFill = None
+) -> Iterator[Tuple[Union[_T, _OptionalFill], ...]]:
     """Make an iterator that aggregates elements from each of the
     iterables. If the iterables are of uneven length, missing values are
     filled-in with fillvalue. Iteration continues until the longest
@@ -475,7 +507,7 @@ def zip_longest(*args, fillvalue=None):
     :param fillvalue: value to fill in those missing from shorter iterables
     """
     # zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
-    iterators = [iter(it) for it in args]
+    iterators: List[Iterator[Union[_T, _OptionalFill]]] = [iter(it) for it in args]
     num_active = len(iterators)
     if not num_active:
         return
