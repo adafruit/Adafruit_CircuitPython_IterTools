@@ -342,17 +342,34 @@ def islice(p, start, stop=(), step=1):
     if stop == ():
         stop = start
         start = 0
+    if stop is not None and stop < 0:
+        raise ValueError("Stop for islice must be None or a non-negative integer")
+    if start < 0:
+        raise ValueError("Start for islice must be a non-negative integer")
+    if step <= 0:
+        raise ValueError("Step for islice must be a positive integer")
+
     # TODO: optimizing or breaking semantics?
     if stop is not None and start >= stop:
         return
     it = iter(p)
     for _ in range(start):
-        next(it)
+        try:
+            next(it)
+        except StopIteration:
+            return
 
     while True:
-        yield next(it)
+        try:
+            val = next(it)
+        except StopIteration:
+            return
+        yield val
         for _ in range(step - 1):
-            next(it)
+            try:
+                next(it)
+            except StopIteration:
+                return
         start += step
         if stop is not None and start >= stop:
             return
@@ -459,7 +476,7 @@ def starmap(
     the iterable. Used instead of map() when argument parameters are already
     grouped in tuples from a single iterable (the data has been “pre-zipped”).
     The difference between map() and starmap() parallels the distinction between
-    function(a,b) and function(\*c).
+    function(a,b) and function(*c).
 
     :param function: the function to apply
     :param iterable: where groups of arguments come from
