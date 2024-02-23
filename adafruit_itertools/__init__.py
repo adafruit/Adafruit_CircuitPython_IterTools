@@ -476,7 +476,7 @@ def starmap(
     the iterable. Used instead of map() when argument parameters are already
     grouped in tuples from a single iterable (the data has been “pre-zipped”).
     The difference between map() and starmap() parallels the distinction between
-    function(a,b) and function(*c).
+    function(a,b) and function(\*c).
 
     :param function: the function to apply
     :param iterable: where groups of arguments come from
