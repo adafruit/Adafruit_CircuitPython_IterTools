@@ -342,17 +342,34 @@ def islice(p, start, stop=(), step=1):
     if stop == ():
         stop = start
         start = 0
+    if stop is not None and stop < 0:
+        raise ValueError("stop must be None or >= 0")
+    if start < 0:
+        raise ValueError("start must be >= 0")
+    if step <= 0:
+        raise ValueError("step must be > 0")
+
     # TODO: optimizing or breaking semantics?
     if stop is not None and start >= stop:
         return
     it = iter(p)
     for _ in range(start):
-        next(it)
+        try:
+            next(it)
+        except StopIteration:
+            return
 
     while True:
-        yield next(it)
+        try:
+            val = next(it)
+        except StopIteration:
+            return
+        yield val
         for _ in range(step - 1):
-            next(it)
+            try:
+                next(it)
+            except StopIteration:
+                return
         start += step
         if stop is not None and start >= stop:
             return
