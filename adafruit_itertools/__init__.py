@@ -343,11 +343,11 @@ def islice(p, start, stop=(), step=1):
         stop = start
         start = 0
     if stop is not None and stop < 0:
-        raise ValueError("Stop for islice must be None or a non-negative integer")
+        raise ValueError("stop must be None or >= 0")
     if start < 0:
-        raise ValueError("Start for islice must be a non-negative integer")
+        raise ValueError("start must be >= 0")
     if step <= 0:
-        raise ValueError("Step for islice must be a positive integer")
+        raise ValueError("step must be > 0")
 
     # TODO: optimizing or breaking semantics?
     if stop is not None and start >= stop:
