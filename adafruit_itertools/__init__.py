@@ -53,7 +53,10 @@ except ImportError:
     pass
 
 
-def accumulate(iterable, func=lambda x, y: x + y):
+def accumulate(
+    iterable: Iterable[_T],
+    func: Callable[[_T, _T], _T] = lambda x, y: x + y,  # type: ignore[operator]
+) -> Iterator[_T]:
     """Make an iterator that returns accumulated sums, or accumulated
     results of other binary functions (specified via the optional func
     argument). If func is supplied, it should be a function of two
@@ -200,7 +203,7 @@ def count(start: _N = 0, step: _N = 1) -> Iterator[_N]:
         start += step
 
 
-def cycle(p):
+def cycle(p: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator returning elements from the iterable and saving a copy
     of each. When the iterable is exhausted, return elements from the saved
     copy. Repeats indefinitely.
@@ -209,7 +212,7 @@ def cycle(p):
 
     """
     try:
-        len(p)
+        len(p)  # type: ignore[arg-type]
     except TypeError:
         # len() is not defined for this type. Assume it is
         # a finite iterable so we must cache the elements.
@@ -242,7 +245,9 @@ def dropwhile(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]
         yield x
 
 
-def filterfalse(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]:
+def filterfalse(
+    predicate: Optional[_Predicate[_T]], iterable: Iterable[_T]
+) -> Iterator[_T]:
     """Make an iterator that filters elements from iterable returning only those
     for which the predicate is False. If predicate is None, return the items
     that are false.
@@ -288,15 +293,21 @@ class groupby:
     # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
     # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
 
-    def __init__(self, iterable, key=None):
+    def __init__(
+        self,
+        iterable: Iterable[_T],
+        key: Optional[Callable[[_T], Any]] = None,
+    ):
         self.keyfunc = key if key is not None else lambda x: x
         self.it = iter(iterable)
-        self.tgtkey = self.currkey = self.currvalue = object()
+        # Sentinel values, not actually returned during iteration.
+        self.currvalue: _T = object()  # type: ignore[assignment]
+        self.tgtkey = self.currkey = self.currvalue
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Tuple[Any, Iterator[_T]]]:
         return self
 
-    def __next__(self):
+    def __next__(self) -> Tuple[Any, Iterator[_T]]:
         self.id = object()
         while self.currkey == self.tgtkey:
             self.currvalue = next(self.it)  # Exit on StopIteration
@@ -304,7 +315,7 @@ class groupby:
         self.tgtkey = self.currkey
         return (self.currkey, self._grouper(self.tgtkey, self.id))
 
-    def _grouper(self, tgtkey, id):
+    def _grouper(self, tgtkey: Any, id: object) -> Iterator[_T]:
         while self.id is id and self.currkey == tgtkey:
             yield self.currvalue
             try:
@@ -314,7 +325,12 @@ class groupby:
             self.currkey = self.keyfunc(self.currvalue)
 
 
-def islice(p, start, stop=(), step=1):
+def islice(
+    p: Iterable[_T],
+    start: int,
+    stop: Optional[int] = (),  # type: ignore[assignment]
+    step: int = 1,
+) -> Iterator[_T]:
     """Make an iterator that returns selected elements from the
     iterable. If start is non-zero and stop is unspecified, then the
     value for start is used as end, and start is taken to be 0. Thus the
@@ -420,7 +436,8 @@ def permutations(
             return
 
 
-def product(*args: Iterable[_T], r: int = 1) -> Iterator[Tuple[_T, ...]]:
+# def product(*args: Iterable[_T], r: int = 1) -> Iterator[Tuple[_T, ...]]:
+def product(*args: Iterable[Any], r: int = 1) -> Iterator[Tuple[Any, ...]]:
     """Cartesian product of input iterables.
 
     Roughly equivalent to nested for-loops in a generator expression. For
@@ -444,7 +461,7 @@ def product(*args: Iterable[_T], r: int = 1) -> Iterator[Tuple[_T, ...]]:
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
     pools = [tuple(pool) for pool in args] * r
-    result: List[List[_T]] = [[]]
+    result: List[List[Any]] = [[]]
     for pool in pools:
         result = [x + [y] for x in result for y in pool]
     for prod in result:
@@ -513,8 +530,8 @@ def tee(iterable: Iterable[_T], n: int = 2) -> Sequence[Iterator[_T]]:
 
 
 def zip_longest(
-    *args: Iterable[_T], fillvalue: _OptionalFill = None
-) -> Iterator[Tuple[Union[_T, _OptionalFill], ...]]:
+    *args: Iterable[Any], fillvalue: _OptionalFill = None
+) -> Iterator[Tuple[Any, ...]]:
     """Make an iterator that aggregates elements from each of the
     iterables. If the iterables are of uneven length, missing values are
     filled-in with fillvalue. Iteration continues until the longest
@@ -524,7 +541,7 @@ def zip_longest(
     :param fillvalue: value to fill in those missing from shorter iterables
     """
     # zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
-    iterators: List[Iterator[Union[_T, _OptionalFill]]] = [iter(it) for it in args]
+    iterators: List[Iterator[Any]] = [iter(it) for it in args]
     num_active = len(iterators)
     if not num_active:
         return
