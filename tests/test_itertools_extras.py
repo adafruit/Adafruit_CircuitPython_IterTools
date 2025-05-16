@@ -8,10 +8,11 @@ from typing import (
     Sequence,
     TypeVar,
 )
-from typing_extensions import TypeAlias
 
 import more_itertools as itextras
 import pytest
+from typing_extensions import TypeAlias
+
 from adafruit_itertools import adafruit_itertools_extras as aextras
 
 _K = TypeVar("_K")
@@ -66,9 +67,7 @@ def test_dotproduct(vec1: Sequence[int], vec2: Sequence[int]) -> None:
         ([], -1, lambda _: True),
     ],
 )
-def test_first_true(
-    seq: Sequence[_T], dflt: _T, pred: Optional[_Predicate[_T]]
-) -> None:
+def test_first_true(seq: Sequence[_T], dflt: _T, pred: Optional[_Predicate[_T]]) -> None:
     assert itextras.first_true(seq, dflt, pred) == aextras.first_true(seq, dflt, pred)
 
 
@@ -84,12 +83,8 @@ def test_first_true(
 def test_flatten(seq1: str, seq2: str) -> None:
     assert list(itextras.flatten(seq1 + seq2)) == list(aextras.flatten(seq1 + seq2))
     for repeat in range(3):
-        assert list(itextras.flatten([seq1] * repeat)) == list(
-            aextras.flatten([seq1] * repeat)
-        )
-        assert list(itextras.flatten([seq2] * repeat)) == list(
-            aextras.flatten([seq2] * repeat)
-        )
+        assert list(itextras.flatten([seq1] * repeat)) == list(aextras.flatten([seq1] * repeat))
+        assert list(itextras.flatten([seq2] * repeat)) == list(aextras.flatten([seq2] * repeat))
 
 
 @pytest.mark.parametrize(
@@ -254,9 +249,7 @@ def test_roundrobin(seq1: str, seq2: str) -> None:
 )
 def test_tabulate(func: Callable[[int], int], start: int) -> None:
     assert _take(5, itextras.tabulate(func)) == _take(5, aextras.tabulate(func))
-    assert _take(5, itextras.tabulate(func, start)) == _take(
-        5, aextras.tabulate(func, start)
-    )
+    assert _take(5, itextras.tabulate(func, start)) == _take(5, aextras.tabulate(func, start))
 
 
 @pytest.mark.parametrize(
