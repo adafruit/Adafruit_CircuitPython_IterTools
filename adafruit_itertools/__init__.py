@@ -22,8 +22,6 @@ Implementation Notes
 * Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 """
-# pylint:disable=invalid-name,redefined-builtin,attribute-defined-outside-init
-# pylint:disable=stop-iteration-return,anomalous-backslash-in-string
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Itertools.git"
@@ -41,6 +39,7 @@ try:
         TypeVar,
         Union,
     )
+
     from typing_extensions import TypeAlias
 
     _T = TypeVar("_T")
@@ -140,9 +139,7 @@ def combinations(iterable: Iterable[_T], r: int) -> Iterator[Tuple[_T, ...]]:
         yield tuple(pool[i] for i in indices)
 
 
-def combinations_with_replacement(
-    iterable: Iterable[_T], r: int
-) -> Iterator[Tuple[_T, ...]]:
+def combinations_with_replacement(iterable: Iterable[_T], r: int) -> Iterator[Tuple[_T, ...]]:
     """Return r length subsequences of elements from the input iterable allowing
     individual elements to be repeated more than once.
 
@@ -245,9 +242,7 @@ def dropwhile(predicate: _Predicate[_T], iterable: Iterable[_T]) -> Iterator[_T]
         yield x
 
 
-def filterfalse(
-    predicate: Optional[_Predicate[_T]], iterable: Iterable[_T]
-) -> Iterator[_T]:
+def filterfalse(predicate: Optional[_Predicate[_T]], iterable: Iterable[_T]) -> Iterator[_T]:
     """Make an iterator that filters elements from iterable returning only those
     for which the predicate is False. If predicate is None, return the items
     that are false.
@@ -391,9 +386,7 @@ def islice(
             return
 
 
-def permutations(
-    iterable: Iterable[_T], r: Optional[int] = None
-) -> Iterator[Tuple[_T, ...]]:
+def permutations(iterable: Iterable[_T], r: Optional[int] = None) -> Iterator[Tuple[_T, ...]]:
     """Return successive r length permutations of elements in the iterable.
 
     If r is not specified or is None, then r defaults to the length of the
@@ -486,9 +479,7 @@ def repeat(el: _T, n: Optional[int] = None) -> Iterator[_T]:
             yield el
 
 
-def starmap(
-    function: Callable[..., _T], iterable: Iterable[Iterable[Any]]
-) -> Iterator[_T]:
+def starmap(function: Callable[..., _T], iterable: Iterable[Iterable[Any]]) -> Iterator[_T]:
     """Make an iterator that computes the function using arguments obtained from
     the iterable. Used instead of map() when argument parameters are already
     grouped in tuples from a single iterable (the data has been “pre-zipped”).
@@ -529,9 +520,7 @@ def tee(iterable: Iterable[_T], n: int = 2) -> Sequence[Iterator[_T]]:
     return [iter(iterable) for _ in range(n)]
 
 
-def zip_longest(
-    *args: Iterable[Any], fillvalue: _OptionalFill = None
-) -> Iterator[Tuple[Any, ...]]:
+def zip_longest(*args: Iterable[Any], fillvalue: _OptionalFill = None) -> Iterator[Tuple[Any, ...]]:
     """Make an iterator that aggregates elements from each of the
     iterables. If the iterables are of uneven length, missing values are
     filled-in with fillvalue. Iteration continues until the longest

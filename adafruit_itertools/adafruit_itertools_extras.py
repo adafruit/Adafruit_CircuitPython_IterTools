@@ -37,8 +37,6 @@ Based on code from the offical Python documentation.
   https://github.com/adafruit/circuitpython/releases
 """
 
-# pylint:disable=invalid-name,keyword-arg-before-vararg,relative-beyond-top-level
-
 import adafruit_itertools as it
 
 try:
@@ -54,6 +52,7 @@ try:
         TypeVar,
         Union,
     )
+
     from typing_extensions import TypeAlias
 
     _T = TypeVar("_T")
@@ -230,9 +229,7 @@ def pairwise(iterable: Iterable[_T]) -> Iterator[Tuple[_T, _T]]:
     return zip(a, b)
 
 
-def partition(
-    pred: _Predicate[_T], iterable: Iterable[_T]
-) -> Tuple[Iterator[_T], Iterator[_T]]:
+def partition(pred: _Predicate[_T], iterable: Iterable[_T]) -> Tuple[Iterator[_T], Iterator[_T]]:
     """Use a predicate to partition entries into false entries and true entries.
 
     :param pred: the predicate that divides the values
@@ -267,9 +264,7 @@ def quantify(iterable: Iterable[_T], pred: _Predicate[_T] = bool) -> int:
     return sum(map(pred, iterable))
 
 
-def repeatfunc(
-    func: Callable[..., _T], times: Optional[int] = None, *args: Any
-) -> Iterator[_T]:
+def repeatfunc(func: Callable[..., _T], times: Optional[int] = None, *args: Any) -> Iterator[_T]:
     """Repeat calls to func with specified arguments.
 
     Example:  repeatfunc(random.random)

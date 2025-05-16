@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: KB Sriram
 # SPDX-License-Identifier: MIT
 
-from typing import Any, Callable, Iterator, Optional, Sequence, Tuple, TypeVar, Union
 import itertools as it
+from typing import Any, Callable, Iterator, Optional, Sequence, Tuple, TypeVar, Union
+
 import pytest
+
 import adafruit_itertools as ait
 
 _K = TypeVar("_K")
@@ -41,7 +43,8 @@ def test_accumulate_types() -> None:
     assert list(x_str_f) == list(it.accumulate("abc", lambda a, x: a + x))
 
     x_bad_arg_f: Iterator[int] = ait.accumulate(
-        [1, 2], lambda a, x: a + ord(x)  # type: ignore[arg-type]
+        [1, 2],
+        lambda a, x: a + ord(x),  # type: ignore[arg-type]
     )
     with pytest.raises(TypeError):
         list(x_bad_arg_f)
@@ -206,9 +209,7 @@ def test_dropwhile(predicate: Callable[[_T], object], seq: Sequence[_T]) -> None
         (lambda x: x % 2, range(10)),
     ],
 )
-def test_filterfalse(
-    predicate: Optional[Callable[[_T], object]], seq: Sequence[_T]
-) -> None:
+def test_filterfalse(predicate: Optional[Callable[[_T], object]], seq: Sequence[_T]) -> None:
     x: Iterator[_T] = ait.filterfalse(predicate, seq)
     y: Iterator[_T] = it.filterfalse(predicate, seq)
     assert list(x) == list(y)
@@ -228,9 +229,7 @@ def test_filterfalse(
     ],
 )
 def test_groupby(data: Sequence[_T], key: Callable[[_T], _K]) -> None:
-    def _listify(
-        iterable: Iterator[Tuple[_K, Iterator[_T]]]
-    ) -> Sequence[Tuple[_K, Sequence[_T]]]:
+    def _listify(iterable: Iterator[Tuple[_K, Iterator[_T]]]) -> Sequence[Tuple[_K, Sequence[_T]]]:
         return [(k, list(group)) for k, group in iterable]
 
     it_l = _listify(it.groupby(data, key))
